@@ -72,20 +72,27 @@
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+}
+
 body {
     font-family: var(--font-sans);
     background-color: var(--background);
     color: var(--foreground);
     line-height: 1.5;
-    height: 100vh;
-    overflow: hidden;
     transition: background-color var(--transition-standard),
                 color var(--transition-standard);
+    -webkit-overflow-scrolling: touch; /* Improve scroll on iOS */
 }
 
 .app-container {
     display: flex;
-    height: 100vh;
+    height: 100%;
+    width: 100%;
+    position: relative;
 }
 
 /* Theme toggle styles */
@@ -124,12 +131,14 @@ body {
     position: fixed;
     left: 0;
     top: 0;
+    bottom: 0;
     z-index: 100;
     transform: translateX(-100%);
     transition: transform var(--transition-standard),
                 background-color var(--transition-standard),
                 border-color var(--transition-standard);
     box-shadow: var(--shadow-lg);
+    overflow-y: auto;
 }
 
 .sidebar.active {
@@ -161,6 +170,10 @@ body {
     padding: 1rem;
     border-bottom: 1px solid var(--border);
     transition: border-color var(--transition-standard);
+    position: sticky;
+    top: 0;
+    background-color: var(--card);
+    z-index: 10;
 }
 
 .sidebar-controls {
@@ -184,7 +197,7 @@ body {
     flex-direction: column;
     flex: 1;
     padding: 1rem;
-    overflow: hidden;
+    overflow-y: auto;
 }
 
 .new-chat-btn {
@@ -199,10 +212,7 @@ body {
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 1rem;
-    transition: background-color var(--transition-fast),
-                border-color var(--transition-fast),
-                color var(--transition-fast),
-                transform var(--transition-fast);
+    transition: background-color var
 }
 
 .new-chat-btn:hover {
@@ -431,43 +441,20 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-.welcome-animation {
-    position: relative;
-    width: 60px;
-    height: 60px;
+/* Removed pulse-circle animations and added welcome text */
+.welcome-text {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary);
     margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: textAppear 1s forwards;
+    animation-delay: 0.3s;
 }
 
-.pulse-circle {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: var(--primary);
-    opacity: 0.2;
-    animation: pulse 2s infinite;
-}
-
-.delay-1 {
-    animation-delay: 0.5s;
-}
-
-.delay-2 {
-    animation-delay: 1s;
-}
-
-@keyframes pulse {
-    0% {
-        transform: translate(-50%, -50%) scale(0.5);
-        opacity: 0.8;
-    }
-    100% {
-        transform: translate(-50%, -50%) scale(1.5);
-        opacity: 0;
-    }
+@keyframes textAppear {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .welcome-message h2 {
@@ -712,13 +699,6 @@ body {
 .toast {
     position: fixed;
     bottom: 20px;
-    left:
-}
-
-/* Toast notification for errors */
-.toast {
-    position: fixed;
-    bottom: 20px;
     left: 50%;
     transform: translateX(-50%) translateY(100px);
     background-color: var(--card);
@@ -805,9 +785,8 @@ body {
         font-size: 1.5rem;
     }
     
-    .welcome-animation {
-        width: 50px;
-        height: 50px;
+    .welcome-text {
+        font-size: 2rem;
     }
 }
 
@@ -836,5 +815,9 @@ body {
     
     .welcome-message p {
         font-size: 0.9rem;
+    }
+    
+    .welcome-text {
+        font-size: 1.8rem;
     }
 }
